@@ -54,6 +54,40 @@
         </div>
       </li>
       <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-bs-toggle="collapse"
+          data-bs-target="#supplier_id"
+          aria-expanded="true"
+          aria-controls="collapseBootstrap"
+        >
+          <i class="bi bi-window"></i>
+          <span>Supplier</span>
+        </a>
+        <div
+          id="supplier_id"
+          class="collapse"
+          aria-labelledby="headingBootstrap"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-white py-2 collapse-inner rounded">
+            <router-link
+              style="cursor: pointer"
+              class="collapse-item"
+              :to="{ name: 'SupplierCreate' }"
+              >Add Suplier</router-link
+            >
+            <router-link
+              style="cursor: pointer"
+              :to="{ name: 'SupplierIndex' }"
+              class="collapse-item"
+              >All Supplier</router-link
+            >
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="forms.html">
           <i class="bi bi-clipboard-data"></i>
           <span>Forms</span>
@@ -236,6 +270,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

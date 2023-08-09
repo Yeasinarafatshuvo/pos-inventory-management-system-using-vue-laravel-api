@@ -11,6 +11,7 @@
       class="form-control"
       style="width: 300px"
       placeholder="Search Here"
+      v-model="searh_term"
     />
     <br />
 
@@ -36,7 +37,10 @@
                 </tr>
               </thead>
               <tbody v-if="employeeAllData.length > 0">
-                <tr v-for="employee in employeeAllData" :key="employee.id">
+                <tr
+                  v-for="employee in employee_filter_search"
+                  :key="employee.id"
+                >
                   <td>{{ employee.name }}</td>
                   <td>
                     <img
@@ -85,7 +89,16 @@ export default {
   data() {
     return {
       employeeAllData: [],
+      searh_term: "",
     };
+  },
+  computed: {
+    employee_filter_search() {
+      return this.employeeAllData.filter((employee) => {
+        const pattern = new RegExp(this.searh_term, "i");
+        return employee.name.match(pattern);
+      });
+    },
   },
 
   methods: {

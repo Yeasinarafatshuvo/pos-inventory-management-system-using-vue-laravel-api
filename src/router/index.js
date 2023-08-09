@@ -2,10 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../components/Auth/Login.vue";
 import Register from "../components/Auth/Register.vue";
-import About from "../views/About";
+
 import EmployeeCreate from "../components/employee/EmployeeCreate.vue";
 import EmployeeIndex from "../components/employee/EmployeeIndex.vue";
 import Employee_edit from "../components/employee/Employee_edit.vue";
+import SupplierCreate from "../components/supplier/SupplierCreate.vue";
+import SupplierEdit from "../components/supplier/SupplierEdit.vue";
+import SupplierIndex from "../components/supplier/SupplierIndex.vue";
 
 const routes = [
   {
@@ -38,11 +41,20 @@ const routes = [
     name: "Employee_edit",
     component: Employee_edit,
   },
-
   {
-    path: "/about",
-    name: "About",
-    component: About,
+    path: "/supplier-create",
+    name: "SupplierCreate",
+    component: SupplierCreate,
+  },
+  {
+    path: "/supplier-index",
+    name: "SupplierIndex",
+    component: SupplierIndex,
+  },
+  {
+    path: "/supplier-edit/:id",
+    name: "SupplierEdit",
+    component: SupplierEdit,
   },
 ];
 
