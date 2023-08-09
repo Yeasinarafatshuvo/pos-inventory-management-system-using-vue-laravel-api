@@ -15,7 +15,7 @@ class EmployeeController extends Controller
         return response()->json([
             'success' => true,
             'data' => $all_employee_data,
-            'message' => 'Employee Created successfully',
+            'message' => 'All Employee Data',
         ], 201);
 
     }
@@ -88,7 +88,7 @@ class EmployeeController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $specefic_employee_data,
-                'message' => 'Employee Created successfully',
+                'message' => 'Employee specefic Data ',
             ], 201);
         }else{
             return response()->json([

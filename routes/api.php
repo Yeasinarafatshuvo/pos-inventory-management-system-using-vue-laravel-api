@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SupplierController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,4 +31,10 @@ Route::group(["middleware" => ["auth:api"]], function(){
     Route::get('/employee_specefic_data/{id}', [EmployeeController::class, 'get_sepecefic_employee_data']);
     Route::put('/update_employee/{id}', [EmployeeController::class, 'update_employee']);
 
+    //supplier route
+    Route::post('/create_supplier', [SupplierController::class, 'create_supplier']);
+    Route::get('/get_all_supplier', [SupplierController::class, 'get_all_supplier']);
+    Route::get('/get_specefic_supplier_data/{id}', [SupplierController::class, 'get_specefic_supplier_data']);
+    Route::put('/update_supplier/{id}', [SupplierController::class, 'update_supplier']);
+    Route::delete('/delete_supplier/{id}', [SupplierController::class, 'delete_supplier']);
 });
