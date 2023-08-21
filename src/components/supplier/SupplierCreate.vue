@@ -137,32 +137,105 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "SupplierCreate.vue",
-
+  name: "EmployeeCreate",
   data() {
     return {
-      data() {
-        return {
-          name: "",
-          email: "",
-          address: "",
-          phone: "",
-          photo: "",
-          shop_name: "",
-          name_error: "",
-          email_error: "",
-          address_error: "",
-          phone_error: "",
-          shop_name_error: "",
-        };
-      },
+      name: "",
+      email: "",
+      address: "",
+      phone: "",
+      photo: "",
+      shop_name: "",
+      name_error: "",
+      email_error: "",
+      address_error: "",
+      phone_error: "",
+      shop_name_error: "",
     };
   },
-
   methods: {
-    addImageFile() {},
-    async create_employee() {},
+    addImageFile(event) {
+      let file = event.target.files[0];
+      if (file.size > 1048770) {
+        this.$toast.error("File Size Should be less than 1 MB", {
+          duration: 1000,
+          position: "top-right",
+        });
+      } else {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.photo = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    async create_employee() {
+      let name = this.name.trim();
+      let email = this.email.trim();
+      let address = this.address.trim();
+      let phone = this.phone;
+      let shop_name = this.shop_name.trim();
+
+      //validation start
+      if (!name) {
+        this.name_error = "Enter Valid Name";
+      } else {
+        this.name_error = "";
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        this.email_error = "Enter Valid Email";
+      } else {
+        this.email_error = "";
+      }
+
+      if (!phone) {
+        this.phone_error = "Enter valid phone number";
+      } else {
+        this.phone_error = "";
+      }
+
+      if (!address) {
+        this.address_error = "Enter a valid Address";
+      } else {
+        this.address_error = "";
+      }
+
+      if (name && emailRegex.test(email) && phone && address) {
+        let result = await axios
+          .post(
+            "http://127.0.0.1:8000/api/create_supplier",
+            {
+              name: name,
+              email: email,
+              address: address,
+              phone: phone,
+              shop_name: shop_name,
+              photo: this.photo,
+            },
+            {
+              headers: {
+                Authorization: `bearer ${localStorage.getItem("user-token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            if (response.data.success) {
+              this.$router.push({ name: "Home" });
+              this.$toast.success(response.data.message, {
+                duration: 1000,
+                position: "top-right",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
   },
 };
 </script>
