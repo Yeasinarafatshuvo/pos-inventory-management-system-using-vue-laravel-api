@@ -49,7 +49,7 @@ class SupplierController extends Controller
 
         $save_supplier = $supplier_instance->save();
 
-        if($save_employee)
+        if($save_supplier)
         {
             return response()->json([
                 'success' => true,
@@ -88,14 +88,14 @@ class SupplierController extends Controller
 
     public function update_supplier(Request $request, $id)
     {
-
+       
         $validate_data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'phone' => 'required',
             'address' => 'required|string',
         ]);
-
+      
         $supplier_instance = new Supplier();
         if($request->photo_update == 1){
             $position = strpos($request->photo, ';');
@@ -139,10 +139,11 @@ class SupplierController extends Controller
             $supplier_instance->address = $request->address;
             $supplier_instance->photo = $old_photo;
             $supplier_instance->shop_name = $request->shop_name ?? null;
+            
         }
 
         $update_supplier = $supplier_instance->update();
-
+        
         if($update_supplier)
         {
             return response()->json([
