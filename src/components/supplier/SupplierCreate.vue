@@ -224,7 +224,7 @@ export default {
           )
           .then((response) => {
             if (response.data.success) {
-              this.$router.push({ name: "Home" });
+              this.$router.push({ name: "SupplierIndex" });
               this.$toast.success(response.data.message, {
                 duration: 1000,
                 position: "top-right",

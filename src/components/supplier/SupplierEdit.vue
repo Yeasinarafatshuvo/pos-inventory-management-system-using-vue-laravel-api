@@ -14,7 +14,7 @@
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Add Supplier</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Edit Supplier</h1>
                   </div>
 
                   <form
@@ -117,9 +117,9 @@
                       <button
                         type="submit"
                         class="btn btn-primary btn-block"
-                        @click="create_employee"
+                        @click="update_supplier"
                       >
-                        Submit
+                        Update
                       </button>
                     </div>
                   </form>
@@ -137,7 +137,142 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  name: "EmployeeCreate",
+  data() {
+    return {
+      name: "",
+      email: "",
+      address: "",
+      phone: "",
+      photo: "",
+      shop_name: "",
+      name_error: "",
+      email_error: "",
+      address_error: "",
+      phone_error: "",
+      shop_name_error: "",
+      photo_update: 0,
+    };
+  },
+  methods: {
+    addImageFile(event) {
+      let file = event.target.files[0];
+      if (file.size > 1048770) {
+        this.$toast.error("File Size Should be less than 1 MB", {
+          duration: 1000,
+          position: "top-right",
+        });
+      } else {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.photo = event.target.result;
+        };
+        reader.readAsDataURL(file);
+        this.photo_update = 1;
+      }
+    },
+    async update_supplier() {
+      let name = this.name.trim();
+      let email = this.email.trim();
+      let address = this.address.trim();
+      let phone = this.phone;
+      let shop_name = this.shop_name.trim();
+
+      //validation start
+      if (!name) {
+        this.name_error = "Enter Valid Name";
+      } else {
+        this.name_error = "";
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        this.email_error = "Enter Valid Email";
+      } else {
+        this.email_error = "";
+      }
+
+      if (!phone) {
+        this.phone_error = "Enter valid phone number";
+      } else {
+        this.phone_error = "";
+      }
+
+      if (!address) {
+        this.address_error = "Enter a valid Address";
+      } else {
+        this.address_error = "";
+      }
+
+      if (name && emailRegex.test(email) && phone && address) {
+        let result = await axios
+          .put(
+            "http://127.0.0.1:8000/api/update_supplier/" +
+              this.$route.params.id,
+            {
+              name: name,
+              email: email,
+              address: address,
+              phone: phone,
+              shop_name: shop_name,
+              photo: this.photo,
+              photo_update: this.photo_update,
+            },
+            {
+              headers: {
+                Authorization: `bearer ${localStorage.getItem("user-token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.data.success) {
+              this.$router.push({ name: "SupplierIndex" });
+              this.$toast.success(response.data.message, {
+                duration: 1000,
+                position: "top-right",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+
+    async getSpecefic_supplier() {
+      let result = await axios
+        .get(
+          "http://127.0.0.1:8000/api/get_specefic_supplier_data/" +
+            this.$route.params.id,
+          {
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.success) {
+            this.name = response.data.data.name;
+            this.email = response.data.data.email;
+            this.address = response.data.data.address;
+            this.phone = response.data.data.phone;
+            this.shop_name = response.data.data.shop_name;
+            this.photo = "http://127.0.0.1:8000/" + response.data.data.photo;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+
+  created() {
+    this.getSpecefic_supplier();
+  },
+};
 </script>
 
 <style></style>
