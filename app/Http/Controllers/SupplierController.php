@@ -96,7 +96,7 @@ class SupplierController extends Controller
             'address' => 'required|string',
         ]);
 
-        $supplier_instance = new Supplier();
+        $supplier_instance = Supplier::find($id);
         if($request->photo_update == 1){
             $position = strpos($request->photo, ';');
             $sub = substr($request->photo, 0, $position);
