@@ -227,7 +227,6 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response);
             if (response.data.success) {
               this.$router.push({ name: "SupplierIndex" });
               this.$toast.success(response.data.message, {
